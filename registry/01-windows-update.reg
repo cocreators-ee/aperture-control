@@ -1,0 +1,8 @@
+Windows Registry Editor Version 5.00
+
+; From https://www.howtogeek.com/howto/windows-vista/prevent-windows-update-from-forcibly-rebooting-your-computer/
+; and https://techjourney.net/permanently-disable-prevent-automatic-restart-of-windows-update-in-windows-10/
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU]
+"NoAutoRebootWithLoggedOnUsers"=dword:00000001
+"AUOptions"=dword:00000002

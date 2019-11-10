@@ -1,0 +1,7 @@
+Windows Registry Editor Version 5.00
+
+; Created by Janne Enberg
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize]
+"AppsUseLightTheme"=dword:00000000
+
