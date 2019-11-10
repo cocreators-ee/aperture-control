@@ -1,5 +1,3 @@
-Start-Sleep -Seconds 5
-
 if (Get-Command choco.exe -ErrorAction SilentlyContinue) {
     Write-Host "Chocolatey already installed, upgrading instead."
     choco.exe upgrade chocolatey
