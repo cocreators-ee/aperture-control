@@ -16,11 +16,21 @@ function label([string]$texter) {
     Write-Host ""
 }
 
+# https://stackoverflow.com/a/50758683
+function refresh-path {
+    $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") +
+                ";" +
+                [System.Environment]::GetEnvironmentVariable("Path","User")
+}
+
 label "Running ps-scripts\*.ps1"
 Get-ChildItem "$pwd\ps-scripts" -Filter *.ps1 |
 ForEach-Object {
     label $_
     powershell.exe -ExecutionPolicy Bypass -NoLogo -NonInteractive -File "ps-scripts\$_"
+
+    # Update PATH if necessary
+    refresh-path
 }
 
 label "Running cmd-scripts\*.ps1"
@@ -28,6 +38,9 @@ Get-ChildItem "$pwd\cmd-scripts" -Filter *.cmd |
 ForEach-Object {
     label $_
     Invoke-Expression "cmd-scripts\$_"
+
+    # Update PATH if necessary
+    refresh-path
 }
 
 label "Applying registry\*.reg"

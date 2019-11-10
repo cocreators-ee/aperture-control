@@ -11,11 +11,14 @@ This has been tested on Windows 10 Professional. No promises about it working un
 
 ## How to run Aperture Control
 
-First, fork this repo and edit the contents of `cmd-scripts`, `ps-scripts`, and `registry` to match your needs. Then launch PowerShell and paste this in it (editing the last bit for the repository).
+First, fork this repo and edit the contents of `cmd-scripts`, `ps-scripts`, and `registry` to match your needs. Then launch PowerShell as Administrator and paste this in it (editing the last bit for the repository).
 
 ```
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted
 (New-Object System.Net.WebClient).DownloadFile('https://raw.githubusercontent.com/Lieturd/aperture-control/master/setup.ps1', 'setup.ps1'); .\setup.ps1 lieturd/aperture-control
 ```
+
+It seems Windows installations by default block PowerShell scripts, which is pretty weird considering they want to promote the tool as "the" scripting tool for Windows, which is why you need to unrestrict the execution policy before running Aperture Control.
 
 Simply what happens is that it downloads the [setup.ps1](./setup.ps1) -script and executes it with your repository as the argument so it knows where to download your configuration.
 
