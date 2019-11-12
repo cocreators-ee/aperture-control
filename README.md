@@ -8,10 +8,13 @@ You can also use it to e.g. deploy various common tools to your fellow developer
 
 This has been tested on Windows 10 Professional. No promises about it working under anything else (but please do send feedback if you are successful in other environments as well).
 
+See [Contributing Guidelines](./CONTRIBUTING.md) and [Code of Conduct](./CODE_OF_CONDUCT.md).
 
 ## How to run Aperture Control
 
-First, fork this repo and edit the contents of `cmd-scripts`, `ps-scripts`, and `registry` to match your needs. Then launch PowerShell as Administrator and paste this in it (editing the last bit for the repository).
+First, fork this repo and edit the contents of `cmd-scripts`, `ps-scripts`, and `registry` to match your needs. You can find a number of pre-made "recipes" to accomplish various tasks in [https://github.com/Lieturd/aperture-control-recipes](https://github.com/Lieturd/aperture-control-recipes). If you care about the order of execution use numbered prefixes such as `01-first-things.cmd`, however the order of execution always goes PowerShell (`ps-scripts`) first, then Batch scripts (`cmd-scripts`), then Registry patches (`registry`).
+
+Then launch PowerShell as Administrator and paste this in it (editing the last bit for the repository).
 
 ```
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted
@@ -43,7 +46,7 @@ The examples provided here use [Chocolatey](https://chocolatey.org) and [Scoop](
 
 ## Words of warning
 
-Do not trust random scripts on the internet, including these. Check them for yourself, make sure you understand what is going on, and that you have reasonable reason to trust them and have control over what is running on your PC.
+Do not blindly trust random scripts on the internet, including these. Check them for yourself, make sure you understand what is going on, and that you have reasonable reason to trust them and have control over what is running on your PC.
 
 Do not use other people's repositories for your configuration, as they may change them, and the scripts can execute anything with administrator permissions without you noticing.
 
