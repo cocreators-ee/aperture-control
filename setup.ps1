@@ -13,12 +13,16 @@ function Unzip {
 }
 
 Write-Host "Downloading $url to $zip"
-Remove-Item -Force $zip -ErrorAction SilentlyContinue
+if (Test-Path $zip) {
+    Remove-Item -Force $zip
+}
 $wc = New-Object System.Net.WebClient
 $wc.DownloadFile($url, $zip)
 
 Write-Host "Cleaning $target"
-Remove-Item -Recurse -Force $target -ErrorAction SilentlyContinue
+if (Test-Path $target) {
+    Remove-Item -Recurse -Force $target
+}
 Write-Host "Extracting $zip to $target"
 Unzip $zip $target
 
