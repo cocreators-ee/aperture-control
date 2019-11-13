@@ -23,33 +23,30 @@ function refresh-path {
                 [System.Environment]::GetEnvironmentVariable("Path","User")
 }
 
-label "Running ps-scripts\*.ps1"
-Get-ChildItem "$pwd\ps-scripts" -Filter *.ps1 |
+label "Running recipes..."
+Get-ChildItem "$pwd\recipes" |
 ForEach-Object {
-    label $_
-    powershell.exe -ExecutionPolicy Bypass -NoLogo -NonInteractive -File "ps-scripts\$_"
+    if ($_ == ".gitkeep") {
+        continue
+    }
+
+    $extension = [IO.Path]::GetExtension($_)
+    if ($extension == ".ps1") {
+        label "$_ PowerShell script"
+        powershell.exe -ExecutionPolicy Bypass -NoLogo -NonInteractive -File "recipes\$_"
+    } elseif ($extension == ".cmd") {
+        label "$_ Batch script"
+        Invoke-Expression "recipes\$_"
+    } elseif ($extension == ".reg") { 
+        label "$_ Registry patch"
+        Invoke-Expression "regedit /s registry\$_"
+    } else {
+        label "Skipping $_ - unsupported extension."
+    }
 
     # Update PATH if necessary
     refresh-path
 }
-
-label "Running cmd-scripts\*.ps1"
-Get-ChildItem "$pwd\cmd-scripts" -Filter *.cmd |
-ForEach-Object {
-    label $_
-    Invoke-Expression "cmd-scripts\$_"
-
-    # Update PATH if necessary
-    refresh-path
-}
-
-label "Applying registry\*.reg"
-Get-ChildItem "$pwd\registry" -Filter *.reg |
-ForEach-Object {
-    label $_
-    Invoke-Expression "regedit /s registry\$_"
-}
-
 
 Write-Host ""
 Write-Host ""

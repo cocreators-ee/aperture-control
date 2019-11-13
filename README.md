@@ -10,22 +10,24 @@ This has been tested on Windows 10 Professional. No promises about it working un
 
 See [Contributing Guidelines](./CONTRIBUTING.md) and [Code of Conduct](./CODE_OF_CONDUCT.md).
 
+
 ## How to run Aperture Control
 
-First, fork this repo and edit the contents of `cmd-scripts`, `ps-scripts`, and `registry` to match your needs. You can find a number of pre-made "recipes" to accomplish various tasks in [https://github.com/Lieturd/aperture-control-recipes](https://github.com/Lieturd/aperture-control-recipes). If you care about the order of execution use numbered prefixes such as `01-first-things.cmd`, however the order of execution always goes PowerShell (`ps-scripts`) first, then Batch scripts (`cmd-scripts`), then Registry patches (`registry`).
+First, fork this repo and edit the contents of `recipes` to match your needs. You can find a number of pre-made "recipes" to accomplish various tasks in [https://github.com/Lieturd/aperture-control-recipes](https://github.com/Lieturd/aperture-control-recipes). If you care about the order of execution use numbered prefixes such as `01-first-things.cmd`.
 
 Then launch PowerShell as Administrator and paste this in it (editing the last bit for the repository).
 
 ```
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted
-(New-Object System.Net.WebClient).DownloadFile('https://raw.githubusercontent.com/Lieturd/aperture-control/master/setup.ps1', 'setup.ps1'); .\setup.ps1 lieturd/aperture-control
+(New-Object System.Net.WebClient).DownloadFile('https://raw.githubusercontent.com/Lieturd/aperture-control/master/setup.ps1', 'setup.ps1')
+.\setup.ps1 username/aperture-control
 ```
 
 It seems Windows installations by default block PowerShell scripts, which is pretty weird considering they want to promote the tool as "the" scripting tool for Windows, which is why you need to unrestrict the execution policy before running Aperture Control.
 
 Simply what happens is that it downloads the [setup.ps1](./setup.ps1) -script and executes it with your repository as the argument so it knows where to download your configuration.
 
-Alternatively, if you don't want your configuration to be public, just copy it from your favorite secure storage, and run the `run-ac-scripts.ps1` -script as Administrator.
+Alternatively, if you don't want your configuration to be public, just copy it from your favorite secure storage, and run the `run-ac-recipes.ps1` -script as Administrator.
 
 **PLEASE NOTE:** Installing a lot of things with this may take a while, and your computer might launch or close various things you are already running. This is best run with a clean system, or right after starting Windows, and letting it do it's thing. Also restarting afterwards might be necessary to finish some installations, to activate various registry changes, and so on.
 
@@ -36,10 +38,11 @@ Simply put, it runs a number of PowerShell and cmd scripts to set up your enviro
 
 In more detail:
 1. The `setup.ps1` script is downloaded with the command above and executed
-2. `setup.ps1` downloads the complete repository from GitHub, unzips it to `%USERPROFILE%\aperture-control` and executes `run-ac-scripts.ps1` with Administrator permissions
-3. `run-ac-scripts.ps1` loops through `ps-scripts` and executes them with PowerShell
-4. `run-ac-scripts.ps1` loops through `cmd-scripts` and executes them with `cmd.exe`
-5. `run-ac-scripts.ps1` loops through `registry` and applies them with `regedit.exe`
+2. `setup.ps1` downloads the complete repository from GitHub, unzips it to `%USERPROFILE%\aperture-control` and executes `run-ac-recipes.ps1` with Administrator permissions
+3. `run-ac-recipes.ps1` loops through `recipes/*` and
+    - `*.ps1` scripts are executed with PowerShell
+    - `*.cmd` scripts are executed with Cmd.exe
+    - `*.reg` files are applied with Regedit
 
 The examples provided here use [Chocolatey](https://chocolatey.org) and [Scoop](https://scoop.sh) package managers to install various things. You may want to take a look into the things they support if you want to make your life easier.
 

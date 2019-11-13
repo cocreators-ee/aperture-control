@@ -24,5 +24,5 @@ Unzip $zip $target
 
 # Elevate to Administrator and continue
 # TODO: Get "aperture-control" name from repo name argument
-Write-Host "Launching $target\aperture-control-master\run-ac-scripts.ps1 as Administrator"
-Start-Process -Wait -Verb runAs -ArgumentList "-ExecutionPolicy", "Bypass", "-NoLogo", "-NonInteractive", "-Command", "cd $target\aperture-control-master; .\run-ac-scripts.ps1" powershell.exe
+Write-Host "Launching $target\aperture-control-master\run-ac-recipes.ps1 as Administrator"
+Start-Process -Wait -Verb runAs -ArgumentList "-ExecutionPolicy", "Bypass", "-NoLogo", "-NonInteractive", "-Command", "cd $target\aperture-control-master; .\run-ac-recipes.ps1" powershell.exe
