@@ -26,18 +26,18 @@ function refresh-path {
 label "Running recipes..."
 Get-ChildItem "$pwd\recipes" |
 ForEach-Object {
-    if ($_ == ".gitkeep") {
+    if ($_ -eq ".gitkeep") {
         continue
     }
 
     $extension = [IO.Path]::GetExtension($_)
-    if ($extension == ".ps1") {
+    if ($extension -eq ".ps1") {
         label "$_ PowerShell script"
         powershell.exe -ExecutionPolicy Bypass -NoLogo -NonInteractive -File "recipes\$_"
-    } elseif ($extension == ".cmd") {
+    } elseif ($extension -eq ".cmd") {
         label "$_ Batch script"
         Invoke-Expression "recipes\$_"
-    } elseif ($extension == ".reg") { 
+    } elseif ($extension -eq ".reg") { 
         label "$_ Registry patch"
         Invoke-Expression "regedit /s registry\$_"
     } else {
