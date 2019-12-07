@@ -38,13 +38,12 @@ Simply put, it runs a number of PowerShell and cmd scripts to set up your enviro
 
 In more detail:
 1. The `setup.ps1` script is downloaded with the command above and executed
-2. `setup.ps1` downloads the complete repository from GitHub, unzips it to `%USERPROFILE%\aperture-control` and executes `run-ac-recipes.ps1` with Administrator permissions
+2. `setup.ps1` downloads the complete repository from GitHub, unzips it under `%USERPROFILE%\aperture-control` and executes `run-ac-recipes.ps1` with Administrator permissions
 3. `run-ac-recipes.ps1` loops through `recipes/*` and
     - `*.ps1` scripts are executed with PowerShell
     - `*.cmd` scripts are executed with Cmd.exe
     - `*.reg` files are applied with Regedit
-
-The examples provided here use [Chocolatey](https://chocolatey.org) and [Scoop](https://scoop.sh) package managers to install various things. You may want to take a look into the things they support if you want to make your life easier.
+4. It sets up the `update.ps1` script in Task Scheduler to be run hourly. It will poll the source repo for updates (just a GitHub API call, nothing heavy), and then if any are found it will download them and apply changes.
 
 
 ## Words of warning

@@ -1,5 +1,6 @@
 param([string]$repo)  
 
+$repoName = $repo.Split("/")[1]
 $url = "https://github.com/$repo/archive/master.zip"
 $zip = "$env:USERPROFILE\Downloads\aperture-control.zip"
 $target = "$env:USERPROFILE\aperture-control" 
@@ -19,14 +20,33 @@ if (Test-Path $zip) {
 $wc = New-Object System.Net.WebClient
 $wc.DownloadFile($url, $zip)
 
-Write-Host "Cleaning $target"
 if (Test-Path $target) {
+    Write-Host "Cleaning $target"
     Remove-Item -Recurse -Force $target
 }
 Write-Host "Extracting $zip to $target"
 Unzip $zip $target
 
+$response = Invoke-WebRequest "https://api.github.com/repos/$repo/commits/master" -UseBasicParsing
+$sha = ($response.Content | ConvertFrom-Json).sha
+
+# Save source repo information
+"$repo" | Out-File "$target\repo.txt"
+"$sha" | Out-File "$target\sha.txt"
+
 # Elevate to Administrator and continue
-# TODO: Get "aperture-control" name from repo name argument
-Write-Host "Launching $target\aperture-control-master\run-ac-recipes.ps1 as Administrator"
-Start-Process -Wait -Verb runAs -ArgumentList "-ExecutionPolicy", "Bypass", "-NoLogo", "-NonInteractive", "-Command", "cd $target\aperture-control-master; .\run-ac-recipes.ps1" powershell.exe
+$acpath = "$target\$repoName-master"
+Write-Host "Launching $acpath\run-ac-recipes.ps1 as Administrator"
+Start-Process -Wait -Verb runAs -ArgumentList "-ExecutionPolicy", "Bypass", "-NoLogo", "-NonInteractive", "-Command", "cd $acpath; .\run-ac-recipes.ps1" powershell.exe
+
+# Set up recurring task to update
+$when = (Get-Date).AddHours(1)
+$span = New-TimeSpan -Days 3650
+$every = New-TimeSpan -Hours 1
+
+$trigger = New-ScheduledTaskTrigger -Once -At $when -RepetitionDuration $span -RepetitionInterval $every -ThrottleLimit 1
+$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-WindowStyle Hidden -ExecutionPolicy Bypass -NoLogo -NonInteractive -Command .\update.ps1" -WorkingDirectory $acpath
+$principal = New-ScheduledTaskPrincipal -UserId "$env:USERDOMAIN\$env:USERNAME" -LogonType "S4U" -RunLevel Highest
+
+Write-Host "Configuring auto-updates via Task Scheduler"
+Register-ScheduledTask -TaskName "ApertureControlUpdate" -ThrottleLimit 1 -Action $action -Trigger $trigger -Principal $principal -Force
