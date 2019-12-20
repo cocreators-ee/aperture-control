@@ -1,19 +1,26 @@
 #Requires -RunAsAdministrator
 
+$scriptDir = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent -Resolve
+Write-Output "Running from $scriptDir"
+
+$target = Split-Path -Path "$scriptDir" -Parent
+
+Start-Transcript -Path "$target\run.log"
+
 function label([string]$texter) {
     $len = $texter.Length
 
     $filler = "-" * $len
     $spacer = " " * $len
 
-    Write-Host ""
-    Write-Host ""
-    Write-Host "/-$filler-\"
-    Write-Host "| $spacer |"
-    Write-Host "| $texter |"
-    Write-Host "| $spacer |"
-    Write-Host "\-$filler-/"
-    Write-Host ""
+    Write-Output ""
+    Write-Output ""
+    Write-Output "/-$filler-\"
+    Write-Output "| $spacer |"
+    Write-Output "| $texter |"
+    Write-Output "| $spacer |"
+    Write-Output "\-$filler-/"
+    Write-Output ""
 }
 
 # https://stackoverflow.com/a/50758683
@@ -48,8 +55,10 @@ ForEach-Object {
     refresh-path
 }
 
-Write-Host ""
-Write-Host ""
-Write-Host "Aperture Control finished."
-Write-Host "You might want to restart your computer to finish installation and apply all the settings."
+Write-Output ""
+Write-Output ""
+Write-Output "Aperture Control finished."
+Write-Output "You might want to restart your computer to finish installation and apply all the settings."
 Start-Sleep -Seconds 30
+
+Stop-Transcript
