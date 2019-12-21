@@ -13,9 +13,11 @@ See [Contributing Guidelines](./CONTRIBUTING.md) and [Code of Conduct](./CODE_OF
 
 ## How to run Aperture Control
 
-First, fork this repo and edit the contents of `recipes` to match your needs. You can find a number of pre-made "recipes" to accomplish various tasks in [https://github.com/Lieturd/aperture-control-recipes](https://github.com/Lieturd/aperture-control-recipes). If you care about the order of execution use numbered prefixes such as `01-first-things.cmd`.
+You should likely start off by taking a look at [https://github.com/Lieturd/aperture-control-example](https://github.com/Lieturd/aperture-control-example) for how to set up a good amount of basic things, fork it, and then edit the contents of `recipes` to match your needs. You can find a number of pre-made "recipes" to accomplish various tasks in [https://github.com/Lieturd/aperture-control-recipes](https://github.com/Lieturd/aperture-control-recipes). 
 
-Then launch PowerShell as Administrator and paste this in it (editing the last bit for the repository).
+If you care about the order of execution use numbered prefixes such as `01-first-things.cmd`.
+
+Once you have a repository set up in GitHub with the contents you want, launch PowerShell as Administrator and paste this in it (editing the last bit for the repository).
 
 ```
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted
@@ -23,9 +25,9 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted
 .\setup.ps1 username/aperture-control
 ```
 
-It seems Windows installations by default block PowerShell scripts, which is pretty weird considering they want to promote the tool as "the" scripting tool for Windows, which is why you need to unrestrict the execution policy before running Aperture Control.
+Note: It seems Windows installations by default block PowerShell scripts, which is pretty weird considering they want to promote the tool as "the" scripting tool for Windows, but that's why you need to unrestrict the execution policy before running Aperture Control.
 
-Simply what happens is that it downloads the [setup.ps1](./setup.ps1) -script and executes it with your repository as the argument so it knows where to download your configuration.
+Simply what happens is that it downloads the [setup.ps1](./setup.ps1) -script and executes it with your repository as the argument so it knows where to download your configuration. This downloads your configuration, runs it, and sets a scheduled task to check for updates hourly.
 
 Alternatively, if you don't want your configuration to be public, just copy it from your favorite secure storage, and run the `run-ac-recipes.ps1` -script as Administrator.
 
